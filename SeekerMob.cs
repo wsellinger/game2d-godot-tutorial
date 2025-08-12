@@ -19,6 +19,7 @@ public partial class SeekerMob : Mob
 
 	//TODO add blue throb animation to seekers
 	//TODO do seekers ever leave the screen?
+	//TODO turning logic is broken if you cross over 0, need to use euler or something
 
     public override void _PhysicsProcess(double delta)
     {
