@@ -14,7 +14,6 @@ public partial class Main : Node
     private Player _player;
     private Marker2D _startPosition;
     private Timer _startTimer;
-    private Timer _scoreTimer;
 	private Timer _spawnTimer;
 	private PathFollow2D _mobSpawnPoint;
 	private AudioStreamPlayer _music;
@@ -34,7 +33,6 @@ public partial class Main : Node
         _player = GetNode<Player>("Player");
 		_startPosition = GetNode<Marker2D>("StartPosition");
         _startTimer = GetNode<Timer>("StartTimer");
-        _scoreTimer = GetNode<Timer>("ScoreTimer");
         _spawnTimer = GetNode<Timer>("SpawnTimer");
         _mobSpawnPoint = GetNode<PathFollow2D>("MobSpawnPath/MobSpawnPoint");
         _music = GetNode<AudioStreamPlayer>("Music");
@@ -49,7 +47,6 @@ public partial class Main : Node
 	public void GameOver()
 	{
 		_spawnTimer.Stop();
-		_scoreTimer.Stop();
 		_music.Stop();
 		_deathSound.Play();
         
@@ -72,15 +69,8 @@ public partial class Main : Node
 	private void OnStartTimerTimeout()
     {
         _spawnTimer.Start();
-        _scoreTimer.Start();
 	}
 
-	private void OnScoreTimerTimeout()
-	{
-		_hud.UpdateScore(++_score);
-	}
-
-    //TODO change score to go up every time a mob is spawned
     //TODO move mob logic below into new DroneMob (maybe have them curve instead of straight)
     //TODO make RocketMob that aims at player and goes fast across board (red throb animation)
     //TODO make timer more robust so we have a progression of slow spawning of simple mobs to a
@@ -88,6 +78,8 @@ public partial class Main : Node
 
 	private void OnSpawnTimerTimeout()
     {
+        _hud.UpdateScore(++_score);
+
         SpawnMob();
 
         if (_mobsSpawned % SEEKER_SPAWN_FREQUENCY == 0)
