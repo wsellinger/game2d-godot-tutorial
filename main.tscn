@@ -9,7 +9,7 @@
 
 [sub_resource type="Curve2D" id="Curve2D_7mycd"]
 _data = {
-"points": PackedVector2Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 480, 0, 0, 0, 0, 0, 480, 720, 0, 0, 0, 0, 0, 720, 0, 0, 0, 0, 0, 0)
+"points": PackedVector2Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 800, 0, 0, 0, 0, 0, 800, 800, 0, 0, 0, 0, 0, 800, 0, 0, 0, 0, 0, 0)
 }
 point_count = 5
 
@@ -40,7 +40,7 @@ color = Color(0.154724, 0.430845, 0.49079, 1)
 [node name="Hud" parent="." instance=ExtResource("3_1bvp3")]
 
 [node name="StartPosition" type="Marker2D" parent="."]
-position = Vector2(240, 450)
+position = Vector2(400, 272.48)
 
 [node name="StartTimer" type="Timer" parent="."]
 wait_time = 2.0

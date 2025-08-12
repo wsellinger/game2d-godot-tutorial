@@ -80,7 +80,6 @@ public partial class Main : Node
 		_hud.UpdateScore(++_score);
 	}
 
-    //TODO make play area bigger and square
     //TODO change score to go up every time a mob is spawned
     //TODO move mob logic below into new DroneMob (maybe have them curve instead of straight)
     //TODO make RocketMob that aims at player and goes fast across board (red throb animation)
