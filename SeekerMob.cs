@@ -6,8 +6,8 @@ public partial class SeekerMob : Mob
 {
 	public Node2D Target { private get; set; }
 
-	private const int SPEED = 100;
-	private const float ANGULAR_VELOCITY = 0.02f;
+	private const int LINEAR_VELOCITY = 100;
+	private const float ANGULAR_VELOCITY = 1f;
 
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
@@ -19,29 +19,30 @@ public partial class SeekerMob : Mob
 
 	//TODO add blue throb animation to seekers
 	//TODO do seekers ever leave the screen?
-	//TODO turning logic is broken if you cross over 0, need to use euler or something
+	//TODO turning logic is broken if you cross over 0, need to use quaternions or something
 
     public override void _PhysicsProcess(double delta)
     {
         if (Target is not null)
-		{
+        {
+            var angularVelocity = ANGULAR_VELOCITY * (float)delta;
             var targetAngle = (Target.GlobalPosition - GlobalPosition).Angle();
-			var angleDiff = Mathf.Abs(Rotation - targetAngle);
+            var angleDiff = Mathf.Abs(Rotation - targetAngle);
 
-			if (angleDiff < ANGULAR_VELOCITY)
-			{
-				Rotation = targetAngle;
-			}
-			else if (targetAngle > Rotation)
-			{
-				Rotation += ANGULAR_VELOCITY;
-			}
-			else if (targetAngle < Rotation)
-			{
-				Rotation -= ANGULAR_VELOCITY;
-			}
+            if (angleDiff < angularVelocity)
+            {
+                Rotation = targetAngle;
+            }
+            else if (targetAngle > Rotation)
+            {
+                Rotation += angularVelocity;
+            }
+            else if (targetAngle < Rotation)
+            {
+                Rotation -= angularVelocity;
+            }
 
-            LinearVelocity = new Vector2(SPEED, 0).Rotated(Rotation);
+            LinearVelocity = new Vector2(LINEAR_VELOCITY, 0).Rotated(Rotation);
         }
     }
 }
