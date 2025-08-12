@@ -2,10 +2,8 @@ using Godot;
 
 namespace Game2D;
 
-public partial class SeekerMob : Mob
+public partial class SeekerMob : TargetedMob
 {
-	public Node2D Target { private get; set; }
-
 	private const int LINEAR_VELOCITY = 100;
 	private const float ANGULAR_VELOCITY = 1f;
 
