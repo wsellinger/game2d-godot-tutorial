@@ -5,6 +5,7 @@ namespace Game2D;
 public partial class Main : Node
 {
 	[Export] public PackedScene DroneMobScene { get; set; }
+    [Export] public PackedScene RocketMobScene { get; set; }
     [Export] public PackedScene SeekerMobScene { get; set; }
 
 	private int _score = 0;
@@ -23,7 +24,6 @@ public partial class Main : Node
     private const double GET_READY_DURATION = 2.0;
     private const string GET_READY_TEXT = "Get Ready!";
     private const string MOBS_GROUP_NAME = "mobs";
-    private const int SEEKER_SPAWN_FREQUENCY = 5;
 
     // Called when the node enters the scene tree for the first time.
     public override void _Ready()
@@ -70,7 +70,6 @@ public partial class Main : Node
         _spawnTimer.Start();
 	}
 
-    //TODO make RocketMob that aims at player and goes fast across board (red throb animation)
     //TODO make timer more robust so we have a progression of slow spawning of simple mobs to a
     //     limit, then start adding in RocketMobs to a limit then SeekerMobs, then start increasing game speed?
 
@@ -78,16 +77,13 @@ public partial class Main : Node
     {
         _hud.UpdateScore(++_score);
 
-        SpawnDrone();
-
-        if (_dronesSpawned % SEEKER_SPAWN_FREQUENCY == 0)
-        {
-            SpawnSeeker();
-        }
+        SpawnDroneMob();
+        SpawnTargetedMob<RocketMob>(RocketMobScene);
+        SpawnTargetedMob<SeekerMob>(SeekerMobScene);
 
         //Local Methods
 
-        void SpawnDrone()
+        void SpawnDroneMob()
         {
             var drone = DroneMobScene.Instantiate<DroneMob>();
             _mobSpawnPoint.ProgressRatio = GD.Randf();
@@ -98,13 +94,13 @@ public partial class Main : Node
             _dronesSpawned++;
         }
 
-        void SpawnSeeker()
+        void SpawnTargetedMob<T>(PackedScene targetedMobScene) where T : TargetedMob
         {
-            var seeker = SeekerMobScene.Instantiate<SeekerMob>();
+            var targetedMob = targetedMobScene.Instantiate<T>();
             _mobSpawnPoint.ProgressRatio = GD.Randf();
-            seeker.Position = _mobSpawnPoint.Position;
-            seeker.Target = _player;
-            AddChild(seeker);
+            targetedMob.Position = _mobSpawnPoint.Position;
+            targetedMob.Target = _player;
+            AddChild(targetedMob);
         }
     }
 }
