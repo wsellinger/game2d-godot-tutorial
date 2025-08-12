@@ -4,11 +4,12 @@ namespace Game2D;
 
 public partial class Main : Node
 {
-	[Export] public PackedScene MobScene { get; set; }
+	[Export] public PackedScene DroneMobScene { get; set; }
     [Export] public PackedScene SeekerMobScene { get; set; }
 
 	private int _score = 0;
-	private int _mobsSpawned = 0;
+	private int _dronesSpawned = 0;
+    private int _seekersSpawned = 0;
 
 	private Hud _hud;
     private Player _player;
@@ -22,8 +23,6 @@ public partial class Main : Node
     private const double GET_READY_DURATION = 2.0;
     private const string GET_READY_TEXT = "Get Ready!";
     private const string MOBS_GROUP_NAME = "mobs";
-    private const double MIN_MOB_VELOCITY = 150.0;
-    private const double MAX_MOB_VELOCITY = 250.0;
     private const int SEEKER_SPAWN_FREQUENCY = 5;
 
     // Called when the node enters the scene tree for the first time.
@@ -71,7 +70,6 @@ public partial class Main : Node
         _spawnTimer.Start();
 	}
 
-    //TODO move mob logic below into new DroneMob (maybe have them curve instead of straight)
     //TODO make RocketMob that aims at player and goes fast across board (red throb animation)
     //TODO make timer more robust so we have a progression of slow spawning of simple mobs to a
     //     limit, then start adding in RocketMobs to a limit then SeekerMobs, then start increasing game speed?
@@ -80,32 +78,24 @@ public partial class Main : Node
     {
         _hud.UpdateScore(++_score);
 
-        SpawnMob();
+        SpawnDrone();
 
-        if (_mobsSpawned % SEEKER_SPAWN_FREQUENCY == 0)
+        if (_dronesSpawned % SEEKER_SPAWN_FREQUENCY == 0)
         {
             SpawnSeeker();
         }
 
         //Local Methods
 
-        void SpawnMob()
+        void SpawnDrone()
         {
-            var rightAngle = Mathf.Pi / 2;
-            var angleVariation = Mathf.Pi / 4;
-            var mob = MobScene.Instantiate<Mob>();
-
+            var drone = DroneMobScene.Instantiate<DroneMob>();
             _mobSpawnPoint.ProgressRatio = GD.Randf();
-            mob.Position = _mobSpawnPoint.Position;
-            mob.Rotation = _mobSpawnPoint.Rotation + rightAngle + RandRangef(-angleVariation, angleVariation);
-            mob.LinearVelocity = new Vector2(RandRangef(MIN_MOB_VELOCITY, MAX_MOB_VELOCITY), 0).Rotated(mob.Rotation);
-            AddChild(mob);
+            drone.Position = _mobSpawnPoint.Position;
+            drone.Rotation = _mobSpawnPoint.Rotation;
+            AddChild(drone);
 
-            _mobsSpawned++;
-
-            //Local Methods
-
-            static float RandRangef(double from, double to) => (float)GD.RandRange(from, to);
+            _dronesSpawned++;
         }
 
         void SpawnSeeker()
@@ -117,5 +107,4 @@ public partial class Main : Node
             AddChild(seeker);
         }
     }
-
 }
