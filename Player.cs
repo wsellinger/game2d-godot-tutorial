@@ -38,7 +38,7 @@ public partial class Player : Area2D
     {
         var fDelta = (float)delta;
         var velocity = GetVelocity(Speed);
-
+        //TODO lets make the movement juicier, maybe there's acceleration and deceleration, maybe some drifting
         Animate(velocity);
         Move(fDelta, velocity);
 
