@@ -42,7 +42,7 @@ color = Color(0.154724, 0.430845, 0.49079, 1)
 [node name="Hud" parent="." instance=ExtResource("3_1bvp3")]
 
 [node name="StartPosition" type="Marker2D" parent="."]
-position = Vector2(400, 272.48)
+position = Vector2(400, 400)
 
 [node name="StartTimer" type="Timer" parent="."]
 wait_time = 2.0

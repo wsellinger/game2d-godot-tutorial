@@ -20,9 +20,6 @@ public partial class Main : Node
 	private PathFollow2D _mobSpawnPoint;
 	private AudioStreamPlayer _music;
     private AudioStreamPlayer _deathSound;
-
-    private const double GET_READY_DURATION = 2.0;
-    private const string GET_READY_TEXT = "Get Ready!";
     private const string MOBS_GROUP_NAME = "mobs";
 
     // Called when the node enters the scene tree for the first time.
@@ -56,7 +53,7 @@ public partial class Main : Node
 	{
 		_score = 0;
 		_hud.UpdateScore(_score);
-		_hud.ShowMessage(GET_READY_TEXT, GET_READY_DURATION);
+		_ = _hud.ShowGameStart();
 
 		_player.Start(_startPosition.Position);
 		GetTree().CallGroup(MOBS_GROUP_NAME, Node.MethodName.QueueFree);
