@@ -10,21 +10,20 @@ namespace Game2D
         [Signal] public delegate void OnSpawnRocketMobEventHandler();
         [Signal] public delegate void OnSpawnSeekerMobEventHandler();
 
-        private Timer _droneSpawnTimer;
-        private Timer _rocketSpawnTimer;
-        private Timer _seekerSpawnTimer;
+        private SpawnTimer[] _timers;
+        private SpawnTimer _droneSpawnTimer;
+        private SpawnTimer _rocketSpawnTimer;
+        private SpawnTimer _seekerSpawnTimer;
 
-        private Timer[] _timers;
-
-        private const double DRONE_INITIAL_SPAWN_SPEED = 0.5;
-        private const double ROCKET_INITIAL_SPAWN_SPEED = 2;
-        private const double SEEKER_INITIAL_SPAWN_SPEED = 5;
+        private SpawnTimer.Data _droneSpawnData = new(StartDelay: 0, SpawnFrequency: 0.5);
+        private SpawnTimer.Data _rocketSpawnData = new(StartDelay: 5, SpawnFrequency: 2);
+        private SpawnTimer.Data _seekerSpawnData = new(StartDelay: 10, SpawnFrequency: 5);
 
         public override void _Ready()
         {
-            _droneSpawnTimer = InitTimer(DRONE_INITIAL_SPAWN_SPEED, OnDroneSpawnTimerTimeout);
-            _rocketSpawnTimer = InitTimer(ROCKET_INITIAL_SPAWN_SPEED, OnRocketSpawnTimerTimeout);
-            _seekerSpawnTimer = InitTimer(SEEKER_INITIAL_SPAWN_SPEED, OnSeekerSpawnTimerTimeout);
+            _droneSpawnTimer = InitSpawnTimer(_droneSpawnData, OnDroneSpawnTimerTimeout);
+            _rocketSpawnTimer = InitSpawnTimer(_rocketSpawnData, OnRocketSpawnTimerTimeout);
+            _seekerSpawnTimer = InitSpawnTimer(_seekerSpawnData, OnSeekerSpawnTimerTimeout);
             _timers = [_droneSpawnTimer, _rocketSpawnTimer, _seekerSpawnTimer];
         }
 
@@ -48,14 +47,12 @@ namespace Game2D
         private void OnRocketSpawnTimerTimeout() => EmitSignal(SignalName.OnSpawnRocketMob);
         private void OnSeekerSpawnTimerTimeout() => EmitSignal(SignalName.OnSpawnSeekerMob);
 
-        private Timer InitTimer(double waitTime, System.Action callback)
+        SpawnTimer InitSpawnTimer(SpawnTimer.Data spawnData, SpawnTimer.OnSpawnEventHandler callback)
         {
-            var timer = new Timer { WaitTime = waitTime };
-            timer.Timeout += callback;
-            AddChild(timer);
-            return timer;
+            var spawnTimer = new SpawnTimer(spawnData);            
+            spawnTimer.OnSpawn += callback;
+            AddChild(spawnTimer);
+            return spawnTimer;
         }
-
-
     }
 }
