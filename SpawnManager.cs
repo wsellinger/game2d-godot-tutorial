@@ -2,7 +2,7 @@ using Godot;
 
 namespace Game2D
 {
-    public partial class SpawnTimer : Node
+    public partial class SpawnManager : Node
     {
         //Signals
 
@@ -16,15 +16,15 @@ namespace Game2D
 
         private Timer[] _timers;
 
-        private const double DRONE_INIT_SPAWN_SPEED = 0.5;
-        private const double ROCKET_INIT_SPAWN_SPEED = 2;
-        private const double SEEKER_INIT_SPAWN_SPEED = 5;
+        private const double DRONE_INITIAL_SPAWN_SPEED = 0.5;
+        private const double ROCKET_INITIAL_SPAWN_SPEED = 2;
+        private const double SEEKER_INITIAL_SPAWN_SPEED = 5;
 
         public override void _Ready()
         {
-            _droneSpawnTimer = InitTimer(DRONE_INIT_SPAWN_SPEED, OnDroneSpawnTimerTimeout);
-            _rocketSpawnTimer = InitTimer(ROCKET_INIT_SPAWN_SPEED, OnRocketSpawnTimerTimeout);
-            _seekerSpawnTimer = InitTimer(SEEKER_INIT_SPAWN_SPEED, OnSeekerSpawnTimerTimeout);
+            _droneSpawnTimer = InitTimer(DRONE_INITIAL_SPAWN_SPEED, OnDroneSpawnTimerTimeout);
+            _rocketSpawnTimer = InitTimer(ROCKET_INITIAL_SPAWN_SPEED, OnRocketSpawnTimerTimeout);
+            _seekerSpawnTimer = InitTimer(SEEKER_INITIAL_SPAWN_SPEED, OnSeekerSpawnTimerTimeout);
             _timers = [_droneSpawnTimer, _rocketSpawnTimer, _seekerSpawnTimer];
         }
 
@@ -55,5 +55,7 @@ namespace Game2D
             AddChild(timer);
             return timer;
         }
+
+
     }
 }

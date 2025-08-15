@@ -22,7 +22,7 @@ public partial class Main : Node
 
     //Custom Nodes
 
-    private SpawnTimer _spawnTimer;
+    private SpawnManager _spawnManager;
 
     private const string MOBS_GROUP_NAME = "mobs";
 
@@ -37,16 +37,16 @@ public partial class Main : Node
         _music = GetNode<AudioStreamPlayer>("Music");
         _deathSound = GetNode<AudioStreamPlayer>("DeathSound");
 
-        _spawnTimer = new SpawnTimer();
-        _spawnTimer.OnSpawnDroneMob += OnSpawnDroneMob;
-        _spawnTimer.OnSpawnRocketMob += OnSpawnRocketMob;
-        _spawnTimer.OnSpawnSeekerMob += OnSpawnSeekerMob;
-        AddChild(_spawnTimer);
+        _spawnManager = new SpawnManager();
+        _spawnManager.OnSpawnDroneMob += OnSpawnDroneMob;
+        _spawnManager.OnSpawnRocketMob += OnSpawnRocketMob;
+        _spawnManager.OnSpawnSeekerMob += OnSpawnSeekerMob;
+        AddChild(_spawnManager);
     }
 
     public void GameOver()
     {
-        _spawnTimer.Stop();
+        _spawnManager.Stop();
         _music.Stop();
         _deathSound.Play();
 
@@ -68,7 +68,7 @@ public partial class Main : Node
 
     private void OnStartTimerTimeout()
     {
-        _spawnTimer.Start();
+        _spawnManager.Start();
     }
 
     //TODO make timer more robust so we have a progression of slow spawning of simple mobs to a
