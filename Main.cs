@@ -26,7 +26,6 @@ public partial class Main : Node
 
     private const string MOBS_GROUP_NAME = "mobs";
 
-    // Called when the node enters the scene tree for the first time.
     public override void _Ready()
     {
         _hud = GetNode<Hud>("Hud");

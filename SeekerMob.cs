@@ -7,7 +7,6 @@ public partial class SeekerMob : TargetedMob
 	private const int LINEAR_VELOCITY = 100;
 	private const float ANGULAR_VELOCITY = 1f;
 
-	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
 		base._Ready();
@@ -15,7 +14,6 @@ public partial class SeekerMob : TargetedMob
         LookAt(Target.Position);
     }
 
-	//TODO add blue throb animation to seekers
 	//TODO do seekers ever leave the screen?
 	//TODO turning logic is broken if you cross over 0, need to use quaternions or something
 
