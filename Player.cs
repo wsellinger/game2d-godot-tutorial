@@ -1,20 +1,25 @@
 using Godot;
+using System;
 using System.Diagnostics.CodeAnalysis;
 
 namespace Game2D;
 
 public partial class Player : Area2D
 {
-    [Signal]
-    public delegate void HitEventHandler();
+    [Signal] public delegate void HitEventHandler();
 
-	[Export]
-	public int Speed { get; set; } = 400;
+	[Export] public int MaxSpeed { get; set; } = 400;
+    [Export] public int Acceleration { get; set; } = 100;
+    [Export] public float Friction { get; set; } = 0.85f;
 
-	public Vector2 ScreenSize;
+    public Vector2 ScreenSize;
 
     private AnimatedSprite2D _sprite;
     private CollisionShape2D _collision;
+
+    private Vector2 _velocity;
+
+    private const float MIN_NONZERO_VELOCITY = 0.001f;
 
     private class AnimationNames
     {
@@ -32,49 +37,66 @@ public partial class Player : Area2D
         Hide();
     }
 
-	public override void _Process(double delta)
+    public override void _Process(double delta)
     {
         var fDelta = (float)delta;
-        var velocity = GetVelocity(Speed);
-        //TODO lets make the movement juicier, maybe there's acceleration and deceleration, maybe some drifting
-        Animate(velocity);
-        Move(fDelta, velocity);
+        var acceleration = GetAcceleration(Acceleration);
+        _velocity = GetVelocity(acceleration);
 
+        Animate(acceleration);
+        Move(fDelta, _velocity);
 
         //Local Methods
 
-        static Vector2 GetVelocity(int speed)
+        static Vector2 GetAcceleration(int acceleration)
         {
-            var velocity = Vector2.Zero;
+            var accelerationVec = Vector2.Zero;
 
             if (Input.IsActionPressed(InputActions.MoveUp))
-                velocity.Y -= 1;
+                accelerationVec.Y -= 1;
 
             if (Input.IsActionPressed(InputActions.MoveDown))
-                velocity.Y += 1;
+                accelerationVec.Y += 1;
 
             if (Input.IsActionPressed(InputActions.MoveLeft))
-                velocity.X -= 1;
+                accelerationVec.X -= 1;
 
             if (Input.IsActionPressed(InputActions.MoveRight))
-                velocity.X += 1;
+                accelerationVec.X += 1;
 
-            return velocity.Normalized() * speed;
+            return accelerationVec.Normalized() * acceleration;
         }
 
-        void Animate(Vector2 velocity)
+        Vector2 GetVelocity(Vector2 acceleration)
         {
-            if (velocity.X != 0)
+            if (acceleration != Vector2.Zero)
+            {                
+                return (_velocity + acceleration).LimitLength(MaxSpeed);
+            }
+            else if (_velocity.Length() > MIN_NONZERO_VELOCITY)
+            {
+                return _velocity * Friction;
+            }
+            else
+            {
+                return Vector2.Zero;
+            }
+
+        }
+
+        void Animate(Vector2 acceleration)
+        {
+            if (acceleration.X != 0)
             {
                 _sprite.Animation = AnimationNames.WALK;
-                _sprite.FlipH = velocity.X < 0;
+                _sprite.FlipH = acceleration.X < 0;
                 _sprite.FlipV = false;
                 _sprite.Play();
             }
-            else if (velocity.Y != 0) 
+            else if (acceleration.Y != 0) 
             { 
                 _sprite.Animation = AnimationNames.UP; 
-                _sprite.FlipV = velocity.Y > 0;
+                _sprite.FlipV = acceleration.Y > 0;
                 _sprite.Play();
             }
             else
