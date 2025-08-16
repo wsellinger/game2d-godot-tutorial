@@ -15,9 +15,9 @@ namespace Game2D
         private SpawnTimer _rocketSpawnTimer;
         private SpawnTimer _seekerSpawnTimer;
 
-        private SpawnTimer.Data _droneSpawnData = new(StartDelay: 0, SpawnFrequency: 0.5);
-        private SpawnTimer.Data _rocketSpawnData = new(StartDelay: 5, SpawnFrequency: 2);
-        private SpawnTimer.Data _seekerSpawnData = new(StartDelay: 10, SpawnFrequency: 5);
+        private readonly SpawnTimer.Data _droneSpawnData = new(StartDelay: 0.1, SpawnFrequency: new(0.5, 0.3), SpawnAcceleration: 0.005);
+        private readonly SpawnTimer.Data _rocketSpawnData = new(StartDelay: 5, SpawnFrequency: new(2, 0.5), SpawnAcceleration: 0.1);
+        private readonly SpawnTimer.Data _seekerSpawnData = new(StartDelay: 10, SpawnFrequency: new(5, 2), SpawnAcceleration: 0.5);
 
         public override void _Ready()
         {

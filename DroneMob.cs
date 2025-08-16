@@ -4,8 +4,8 @@ namespace Game2D;
 
 public partial class DroneMob : Mob
 {
-    private const double MIN_VELOCITY = 150.0;
-    private const double MAX_VELOCITY = 250.0;
+    private const double MIN_VELOCITY = 100.0;
+    private const double MAX_VELOCITY = 200.0;
 
     // Called when the node enters the scene tree for the first time.
     public override void _Ready()

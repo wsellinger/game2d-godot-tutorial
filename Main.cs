@@ -71,9 +71,6 @@ public partial class Main : Node
         _spawnManager.Start();
     }
 
-    //TODO make timer more robust so we have a progression of slow spawning of simple mobs to a
-    //     limit, then start adding in RocketMobs to a limit then SeekerMobs, then start increasing game speed?
-
     private void OnSpawnDroneMob()
     {
         _hud.UpdateScore(++_score);

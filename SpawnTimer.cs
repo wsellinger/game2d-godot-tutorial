@@ -6,17 +6,25 @@ namespace Game2D
     {
         [Signal] public delegate void OnSpawnEventHandler();
 
-        public record Data(double StartDelay, double SpawnFrequency);
+        public record Data(double StartDelay, RangeDouble SpawnFrequency, double SpawnAcceleration);
 
         private Timer _startTimer;
         private Timer _spawnTimer;
 
+        private readonly RangeDouble _spawnFrequency;
+        private readonly double _spawnAcceleration;
+
         public SpawnTimer(Data data)
         {
             _startTimer = InitTimer(data.StartDelay, OnStartTimer);
-            _spawnTimer = InitTimer(data.SpawnFrequency, OnSpawnTimer);
+            _spawnTimer = InitTimer(data.SpawnFrequency.Start, OnSpawnTimer);
+            
+            _spawnFrequency = data.SpawnFrequency;
+            _spawnAcceleration = data.SpawnAcceleration;
 
             _startTimer.OneShot = true;
+
+            //Local
 
             Timer InitTimer(double waitTime, System.Action callback)
             {
@@ -38,8 +46,20 @@ namespace Game2D
             _spawnTimer.Stop();
         }
 
-        private void OnStartTimer() => _spawnTimer.Start();
+        private void OnStartTimer()
+        {
+            _spawnTimer.WaitTime = _spawnFrequency.Start;
+            _spawnTimer.Start();
+        }
 
-        private void OnSpawnTimer() => EmitSignal(SignalName.OnSpawn);
+        private void OnSpawnTimer()
+        {
+            //Update Spawn Frequency
+            var waitTime = _spawnTimer.WaitTime;
+            if (waitTime > _spawnFrequency.End)
+                _spawnTimer.WaitTime = Mathf.Max(waitTime - _spawnAcceleration, _spawnFrequency.End);
+
+            EmitSignal(SignalName.OnSpawn);            
+        }
     }
 }
