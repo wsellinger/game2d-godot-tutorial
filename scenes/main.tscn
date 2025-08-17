@@ -1,11 +1,11 @@
 [gd_scene load_steps=11 format=4 uid="uid://do50ddgfixiu5"]
 
-[ext_resource type="Script" uid="uid://deu0uqdrq3c6y" path="res://Main.cs" id="1_h2yge"]
-[ext_resource type="PackedScene" uid="uid://cgjpx2ghvbsym" path="res://droneMob.tscn" id="2_7mycd"]
-[ext_resource type="PackedScene" uid="uid://xhws2dyfp1j2" path="res://hud.tscn" id="3_1bvp3"]
-[ext_resource type="PackedScene" uid="uid://cpk3qetvw8y68" path="res://rocketMob.tscn" id="3_5vw27"]
-[ext_resource type="PackedScene" uid="uid://dulto1o0nx2yx" path="res://seekerMob.tscn" id="3_272bh"]
-[ext_resource type="PackedScene" uid="uid://bu8oxawq2r4d8" path="res://player.tscn" id="3_lquwl"]
+[ext_resource type="Script" uid="uid://deu0uqdrq3c6y" path="res://scripts/Main.cs" id="1_h2yge"]
+[ext_resource type="PackedScene" uid="uid://cgjpx2ghvbsym" path="res://scenes/droneMob.tscn" id="2_7mycd"]
+[ext_resource type="PackedScene" uid="uid://xhws2dyfp1j2" path="res://scenes/hud.tscn" id="3_1bvp3"]
+[ext_resource type="PackedScene" uid="uid://cpk3qetvw8y68" path="res://scenes/rocketMob.tscn" id="3_5vw27"]
+[ext_resource type="PackedScene" uid="uid://dulto1o0nx2yx" path="res://scenes/seekerMob.tscn" id="3_272bh"]
+[ext_resource type="PackedScene" uid="uid://bu8oxawq2r4d8" path="res://scenes/player.tscn" id="3_lquwl"]
 [ext_resource type="AudioStream" uid="uid://bx6oqy44ctwt3" path="res://art/gameover.wav" id="5_lquwl"]
 
 [sub_resource type="Curve2D" id="Curve2D_7mycd"]
