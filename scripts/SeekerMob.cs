@@ -14,28 +14,21 @@ public partial class SeekerMob : TargetedMob
         LookAt(Target.Position);
     }
 
-	//TODO do seekers ever leave the screen?
-	//TODO turning logic is broken if you cross over 0, need to use quaternions or something
-
     public override void _PhysicsProcess(double delta)
     {
         if (Target is not null)
         {
             var angularVelocity = ANGULAR_VELOCITY * (float)delta;
             var targetAngle = (Target.GlobalPosition - GlobalPosition).Angle();
-            var angleDiff = Mathf.Abs(Rotation - targetAngle);
-
-            if (angleDiff < angularVelocity)
+            var angleDiff = Mathf.Wrap(targetAngle - Rotation, -Mathf.Pi, Mathf.Pi);
+            
+            if (Mathf.Abs(angleDiff) < angularVelocity)
             {
                 Rotation = targetAngle;
             }
-            else if (targetAngle > Rotation)
+            else
             {
-                Rotation += angularVelocity;
-            }
-            else if (targetAngle < Rotation)
-            {
-                Rotation -= angularVelocity;
+                Rotation += Mathf.Sign(angleDiff) * angularVelocity;
             }
 
             LinearVelocity = new Vector2(LINEAR_VELOCITY, 0).Rotated(Rotation);
