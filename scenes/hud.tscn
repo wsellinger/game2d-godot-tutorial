@@ -1,7 +1,44 @@
-[gd_scene load_steps=5 format=3 uid="uid://xhws2dyfp1j2"]
+[gd_scene load_steps=8 format=3 uid="uid://xhws2dyfp1j2"]
 
 [ext_resource type="Script" uid="uid://cp061kt657mse" path="res://scripts/Hud.cs" id="1_64ctp"]
 [ext_resource type="FontFile" uid="uid://do7l6nx4wsrmq" path="res://fonts/Xolonium-Regular.ttf" id="2_8sq4i"]
+
+[sub_resource type="Animation" id="Animation_oo0fn"]
+resource_name = "Flash"
+length = 3.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5, 1, 1.5, 2, 2.5, 3, 3.5),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [false, true, false, true, false, true, false, true]
+}
+
+[sub_resource type="Animation" id="Animation_5ysmq"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_6fi6k"]
+_data = {
+&"Flash": SubResource("Animation_oo0fn"),
+&"RESET": SubResource("Animation_5ysmq")
+}
 
 [sub_resource type="InputEventAction" id="InputEventAction_64ctp"]
 action = &"Start"
@@ -17,8 +54,9 @@ anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
 offset_left = -22.5
+offset_top = 44.0
 offset_right = 22.5
-offset_bottom = 78.0
+offset_bottom = 122.0
 grow_horizontal = 2
 theme_override_fonts/font = ExtResource("2_8sq4i")
 theme_override_font_sizes/font_size = 64
@@ -26,7 +64,25 @@ text = "0"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="CTALabel" type="Label" parent="."]
+[node name="HighScoreLabel" type="Label" parent="."]
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -109.5
+offset_top = 9.85
+offset_right = 109.5
+offset_bottom = 48.85
+grow_horizontal = 2
+theme_override_fonts/font = ExtResource("2_8sq4i")
+theme_override_font_sizes/font_size = 32
+text = "HIGH SCORE"
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="HighScoreLabel"]
+libraries = {
+&"": SubResource("AnimationLibrary_6fi6k")
+}
+
+[node name="MessageLabel" type="Label" parent="."]
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
@@ -46,7 +102,6 @@ vertical_alignment = 1
 autowrap_mode = 2
 
 [node name="StartLabel" type="Label" parent="."]
-visible = false
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
